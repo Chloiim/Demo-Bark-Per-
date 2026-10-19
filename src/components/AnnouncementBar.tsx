@@ -2,32 +2,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { Truck, ShieldCheck, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const MESSAGES = [
-  { icon: Flame, text: 'Envío gratis por compras mayores a S/ 150 con el código BARK' },
-  { icon: Truck, text: 'Envíos rápidos a todo el Perú (Lima 24h - Provincias 48h)' },
-  { icon: ShieldCheck, text: 'Acumula Bark Points con cada compra y canjea descuentos' },
-];
+import { useCMS } from '@/context/CMSContext';
 
 export const AnnouncementBar = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
+  const { content } = useCMS();
+  const messages = content.announcementMessages;
+  const icons = [Flame, Truck, ShieldCheck];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIdx(prev => (prev + 1) % MESSAGES.length);
+      setCurrentIdx(prev => (prev + 1) % Math.max(messages.length, 1));
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [messages.length]);
 
   const handlePrev = () => {
-    setCurrentIdx(prev => (prev === 0 ? MESSAGES.length - 1 : prev - 1));
+    setCurrentIdx(prev => (prev === 0 ? Math.max(messages.length - 1, 0) : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentIdx(prev => (prev + 1) % MESSAGES.length);
+    setCurrentIdx(prev => (prev + 1) % Math.max(messages.length, 1));
   };
 
-  const CurrentIcon = MESSAGES[currentIdx].icon;
+  const CurrentIcon = icons[currentIdx % icons.length];
 
   return (
     <div className="bg-neutral-900 text-white text-xs font-medium py-2 px-4 border-b border-neutral-800 transition-colors">
@@ -50,7 +48,7 @@ export const AnnouncementBar = () => {
           <div className="flex items-center gap-2">
             <CurrentIcon className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
             <span className="font-semibold tracking-wide text-neutral-100">
-              {MESSAGES[currentIdx].text}
+              {messages[currentIdx] ?? 'Bienvenido a BARK Perú'}
             </span>
           </div>
 

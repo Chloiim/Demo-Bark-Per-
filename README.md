@@ -16,6 +16,17 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Panel administrativo
+
+Abre [http://localhost:3000/admin](http://localhost:3000/admin) para administrar el catálogo y el contenido de la portada:
+
+- Crear, editar, duplicar y eliminar productos.
+- Actualizar precios, stock, categorías, etiquetas e imágenes.
+- Editar los mensajes promocionales y banners principales.
+- Restablecer el contenido inicial de la tienda.
+
+Esta versión guarda los cambios en `localStorage` del navegador porque el proyecto usa exportación estática (`output: 'export'`). Para administrar contenido entre distintos dispositivos o usuarios será necesario conectar el CMS a una base de datos y un servicio de autenticación.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

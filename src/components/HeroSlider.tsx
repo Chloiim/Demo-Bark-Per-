@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight, Flame } from 'lucide-react';
+import { useCMS } from '@/context/CMSContext';
 
 interface HeroSliderProps {
   onExplore: () => void;
@@ -15,35 +16,12 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
   onExploreCombos,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const slides = [
-    {
-      id: 1,
-      tag: '🔥 OFICIAL PERÚ • EDICIÓN ATLETA',
-      title: 'SUPLEMENTOS & ACCESORIOS PARA MAXIMIZAR TU RENDIMIENTO.',
-      subtitle:
-        'Vendemos artículos, accesorios y suplementos de grado competencia formulados para mejorar tu fuerza, masa muscular y recuperación en el gimnasio y deporte.',
-      image:
-        'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1600&auto=format&fit=crop',
-      btnText: 'Ver Catálogo Completo',
-      btnAction: onExplore,
-      secondaryBtnText: 'Elige tu Objetivo',
-      secondaryBtnAction: onExploreObjectives,
-    },
-    {
-      id: 2,
-      tag: '⚡ COMBOS EN PROMO • AHORRA HASTA S/. 70',
-      title: 'COMBOS DE FUERZA & HIPERTROFIA LISTOS PARA COMPRAR.',
-      subtitle:
-        'La combinación ideal: Proteína Isolate ultra pura + Creatina monohidratada + Accesorios heavy-duty con ENVÍO GRATIS a todo el Perú.',
-      image:
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop',
-      btnText: 'Ver Combos en Promo',
-      btnAction: onExploreCombos,
-      secondaryBtnText: 'Ver Accesorios',
-      secondaryBtnAction: onExplore,
-    },
-  ];
+  const { content } = useCMS();
+  const slides = content.heroSlides.map((slide, index) => ({
+    ...slide,
+    btnAction: index === 1 ? onExploreCombos : onExplore,
+    secondaryBtnAction: index === 0 ? onExploreObjectives : onExplore,
+  }));
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,7 +38,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
     setCurrentSlide(prev => (prev + 1) % slides.length);
   };
 
-  const slide = slides[currentSlide];
+  const slide = slides[currentSlide] ?? slides[0];
+
+  if (!slide) return null;
 
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white min-h-[520px] sm:min-h-[580px] lg:min-h-[620px] flex items-center">
