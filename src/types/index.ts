@@ -19,6 +19,7 @@ export interface Product {
   image: string;
   secondaryImage?: string;
   description: string;
+  weight?: string;
   servingOrSpecs?: string;
   benefits: string[];
   variants?: ProductVariant[];

@@ -330,14 +330,23 @@ function ProductEditor({ product, onSave, onCancel }: { product: Product; onSave
         <div className="space-y-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
           <Field label="Nombre del producto"><input className={inputClass} value={draft.name} onChange={e => update({ name: e.target.value })} /></Field>
           <div className="grid gap-4 sm:grid-cols-2"><Field label="Precio (S/.)"><input type="number" className={inputClass} value={draft.price} onChange={e => update({ price: Number(e.target.value) })} /></Field><Field label="Precio anterior (opcional)"><input type="number" className={inputClass} value={draft.originalPrice ?? ''} onChange={e => update({ originalPrice: e.target.value ? Number(e.target.value) : undefined })} /></Field></div>
-          <div className="grid gap-4 sm:grid-cols-2"><Field label="Categoría"><select className={inputClass} value={draft.category} onChange={e => { const category = e.target.value as Product['category']; update({ category, variants: category === 'suplementos' ? draft.variants : undefined }); }}><option value="suplementos">Suplementos</option><option value="accesorios">Accesorios</option><option value="bundles">Combos</option></select></Field><Field label="Objetivo"><select className={inputClass} value={draft.objective} onChange={e => update({ objective: e.target.value as Product['objective'] })}><option value="masa">Masa muscular</option><option value="definir">Definición</option><option value="fuerza">Fuerza</option><option value="energia">Energía</option></select></Field></div>
+          <div className="grid gap-4 sm:grid-cols-2"><Field label="Categoría"><select className={inputClass} value={draft.category} onChange={e => { const category = e.target.value as Product['category']; update({ category, variants: category === 'suplementos' ? draft.variants : undefined, weight: category === 'suplementos' ? draft.weight : undefined }); }}><option value="suplementos">Suplementos</option><option value="accesorios">Accesorios</option><option value="bundles">Combos</option></select></Field><Field label="Objetivo"><select className={inputClass} value={draft.objective} onChange={e => update({ objective: e.target.value as Product['objective'] })}><option value="masa">Masa muscular</option><option value="definir">Definición</option><option value="fuerza">Fuerza</option><option value="energia">Energía</option></select></Field></div>
           <Field label="Descripción"><textarea rows={4} className={inputClass} value={draft.description} onChange={e => update({ description: e.target.value })} /></Field>
           <div className="grid gap-4 sm:grid-cols-2"><Field label="Etiqueta promocional"><input className={inputClass} value={draft.badge ?? ''} onChange={e => update({ badge: e.target.value || undefined })} placeholder="MÁS VENDIDO" /></Field><Field label="Stock disponible"><input type="number" className={inputClass} value={draft.stockLeft ?? ''} onChange={e => update({ stockLeft: e.target.value ? Number(e.target.value) : undefined })} /></Field></div>
           {draft.category === 'suplementos' && <div className="rounded-2xl border border-red-100 bg-red-50/50 p-4">
             <div className="mb-3">
-              <h3 className="text-sm font-black">Sabores y variantes</h3>
-              <p className="mt-1 text-xs text-neutral-500">Agrega las opciones que el cliente podrá elegir antes de añadir al carrito.</p>
+              <h3 className="text-sm font-black">Información del suplemento</h3>
+              <p className="mt-1 text-xs text-neutral-500">Completa el peso y las opciones que el cliente podrá elegir.</p>
             </div>
+            <Field label="Peso del producto">
+              <input
+                className={inputClass}
+                value={draft.weight ?? ''}
+                onChange={e => update({ weight: e.target.value || undefined })}
+                placeholder="300 g, 1 kg, 2 lb"
+              />
+            </Field>
+            <h3 className="mb-3 mt-5 text-sm font-black">Sabores y variantes</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Nombre de la variante">
                 <input

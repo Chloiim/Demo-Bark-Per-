@@ -76,7 +76,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Specs / Serving */}
           <div className="text-[10px] uppercase font-extrabold text-neutral-400 tracking-wider mb-1">
-            {product.servingOrSpecs || product.category}
+            {[product.weight, product.servingOrSpecs].filter(Boolean).join(' | ') || product.category}
           </div>
 
           {/* Title */}
