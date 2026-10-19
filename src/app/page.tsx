@@ -13,14 +13,15 @@ import { ReviewsSection } from '@/components/ReviewsSection';
 import { Footer } from '@/components/Footer';
 import { SocialProofToast } from '@/components/SocialProofToast';
 import { WhatsAppFloatingWidget } from '@/components/WhatsAppFloatingWidget';
-import { PRODUCTS } from '@/data/products';
+import { useCMS } from '@/context/CMSContext';
 import { FitnessObjective } from '@/types';
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [selectedObjective, setSelectedObjective] = useState<FitnessObjective>('todos');
+  const { content } = useCMS();
 
-  const bundles = PRODUCTS.filter(p => p.category === 'bundles');
+  const bundles = content.products.filter(p => p.category === 'bundles');
 
   const scrollToCatalog = (cat?: string) => {
     if (cat) setSelectedCategory(cat);
@@ -85,7 +86,7 @@ export default function Home() {
 
         {/* 8. Categorías destacadas & Product Tabs */}
         <ProductGrid
-          products={PRODUCTS}
+          products={content.products}
           activeCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
           activeObjective={selectedObjective}
